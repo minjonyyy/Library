@@ -5,8 +5,8 @@ import com.example.library.author.Author;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -19,18 +19,19 @@ public class Book {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String author;
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookAuthor> bookAuthors = new ArrayList<>();
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BookAuthor> bookAuthors = new HashSet<>();
-
-    public Book(String title, String author) {
+    public Book(String title) {
         this.title = title;
-        this.author = author;
     }
 
     public Book() {
 
+    }
+
+    public void addAuthor(Author author) {
+        BookAuthor bookAuthor = new BookAuthor(this, author);
+        this.bookAuthors.add(bookAuthor);
     }
 }

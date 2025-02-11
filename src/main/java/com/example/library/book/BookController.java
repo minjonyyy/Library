@@ -17,9 +17,10 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<BookResponseDto> createBook(@RequestBody BookRequestDto requestDto) {
-        BookResponseDto savedBook = bookService.createBook(requestDto.getTitle(), requestDto.getAuthor());
+        Book savedBook = bookService.createBook(requestDto.getTitle(), requestDto.getAuthorIds());
 
-        return new ResponseEntity<>(savedBook,HttpStatus.CREATED);
+        return new ResponseEntity<>(new BookResponseDto(savedBook), HttpStatus.CREATED);
+
     }
 
     @GetMapping
@@ -28,15 +29,15 @@ public class BookController {
         return new ResponseEntity<>(allBooks,HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BookResponseDto> findBookById(@PathVariable Long id) {
-        BookResponseDto bookById = bookService.findBookById(id);
-        return new ResponseEntity<>(bookById,HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBookById(@PathVariable Long id) {
-        bookService.deleteBookById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<BookResponseDto> findBookById(@PathVariable Long id) {
+//        BookResponseDto bookById = bookService.findBookById(id);
+//        return new ResponseEntity<>(bookById,HttpStatus.OK);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteBookById(@PathVariable Long id) {
+//        bookService.deleteBookById(id);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 }

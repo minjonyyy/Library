@@ -5,7 +5,9 @@ import com.example.library.book.Book;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -22,8 +24,8 @@ public class Author {
     @Column(nullable = false)
     private Integer age;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BookAuthor> bookAuthors = new HashSet<>();
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BookAuthor> bookAuthors = new ArrayList<>();
 
 
     public Author(String name, Integer age) {
@@ -31,7 +33,10 @@ public class Author {
         this.age = age;
     }
 
-    public Author() {
+    public Author() {}
 
+    public void addBook(BookAuthor bookAuthor) {
+        bookAuthors.add(bookAuthor);
+        bookAuthor.setAuthor(this);
     }
 }
